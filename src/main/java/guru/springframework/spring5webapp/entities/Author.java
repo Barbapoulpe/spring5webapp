@@ -1,7 +1,13 @@
-package guru.springframework.spring5webapp.domain;
+package guru.springframework.spring5webapp.entities;
 
-import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 /**
  * Created by jt on 12/22/19.
@@ -22,6 +28,10 @@ public class Author {
     public Author() {
     }
 
+    public Author(String firstName, String lastName) {
+       this(firstName, lastName, new HashSet<>());
+    }
+    
     public Author(String firstName, String lastName, Set<Book> books) {
         this.firstName = firstName;
         this.lastName = lastName;

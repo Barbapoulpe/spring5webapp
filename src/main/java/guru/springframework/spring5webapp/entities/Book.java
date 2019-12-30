@@ -1,7 +1,16 @@
-package guru.springframework.spring5webapp.domain;
+package guru.springframework.spring5webapp.entities;
 
-import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 
 /**
  * Created by jt on 12/22/19.
@@ -12,10 +21,13 @@ public class Book {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	private String title;
 	private String isbn;
-	private String publisher;
+	
+	@OneToOne
+	@JoinTable(name = "publisher_book", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "publisher_id"))
+	private Publisher publisher;
 
 	@ManyToMany
 	@JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "author_id"))
@@ -24,10 +36,15 @@ public class Book {
 	public Book() {
 	}
 
-	public Book(String title, String isbn, Set<Author> authors) {
+	public Book(String title, String isbn, Publisher publisher) {
+		this(title, isbn, publisher, new HashSet<>());
+	}
+
+	public Book(String title, String isbn, Publisher publisher, Set<Author> authors) {
 		this.title = title;
 		this.isbn = isbn;
 		this.authors = authors;
+		this.publisher=publisher;
 	}
 
 	public Long getId() {
@@ -54,11 +71,11 @@ public class Book {
 		this.isbn = isbn;
 	}
 
-	public String getPublisher() {
+	public Publisher getPublisher() {
 		return publisher;
 	}
 
-	public void setPublisher(String publisher) {
+	public void setPublisher(Publisher publisher) {
 		this.publisher = publisher;
 	}
 
