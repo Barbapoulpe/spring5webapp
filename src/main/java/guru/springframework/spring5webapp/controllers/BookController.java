@@ -1,5 +1,6 @@
 package guru.springframework.spring5webapp.controllers;
 
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,13 +10,13 @@ import guru.springframework.spring5webapp.repositories.BookRepository;
 @Controller
 public class BookController {
 
-	private BookRepository bookRepository;
+	private final BookRepository bookRepository;
 
 	public BookController(BookRepository bookRepository) {
 		this.bookRepository = bookRepository;
 	}
 
-	@RequestMapping("/books")
+	@RequestMapping(path = "/books", produces = MediaType.TEXT_HTML_VALUE)
 	public String getBooks(Model model) {
 		model.addAttribute("books", bookRepository.findAll());
 		return "books";
